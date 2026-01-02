@@ -108,7 +108,7 @@ jobs:
               state: 'success',
               environment_url: '${{ steps.deploy-preview.outputs.deploy_url }}',
               log_url: '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}',
-              description: '🎮 Play Super Mario War!'
+              description: 'Play Super Mario War!'
             });
 
       - name: Comment PR with Preview Link

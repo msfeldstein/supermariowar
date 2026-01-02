@@ -5,6 +5,9 @@
   "public": true,
   "cleanUrls": true,
   "trailingSlash": false,
+  "git": {
+    "deploymentEnabled": false
+  },
   "headers": [
     {
       "source": "/(.*)",
