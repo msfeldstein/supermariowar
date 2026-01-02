@@ -44,6 +44,53 @@ target_compile_definitions(smw PRIVATE
 	GIT_DATE="${SMW_GIT_DATE}"
 )
 
+#
+# iOS app bundle configuration
+#
+if (CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	set(SMW_IOS_BUNDLE_ID "net.smwstuff.supermariowar" CACHE STRING "iOS bundle identifier")
+	set(SMW_IOS_BUNDLE_DATA ON CACHE BOOL "Copy data/ into the iOS app bundle")
+
+	set(_smw_ios_plist_in "${PROJECT_SOURCE_DIR}/resources/ios/Info.plist.in")
+	set(_smw_ios_plist "${PROJECT_BINARY_DIR}/Info-iOS.plist")
+	set(SMW_VERSION "${PROJECT_VERSION}")
+	configure_file("${_smw_ios_plist_in}" "${_smw_ios_plist}" @ONLY)
+
+	set_target_properties(smw PROPERTIES
+		MACOSX_BUNDLE TRUE
+		MACOSX_BUNDLE_INFO_PLIST "${_smw_ios_plist}"
+		XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "${SMW_IOS_BUNDLE_ID}"
+		XCODE_ATTRIBUTE_ENABLE_BITCODE "NO"
+		XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
+		XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO"
+	)
+
+	# SDL/iOS commonly needs these system frameworks when linking statically.
+	target_link_libraries(smw PRIVATE
+		"-framework UIKit"
+		"-framework Foundation"
+		"-framework CoreGraphics"
+		"-framework QuartzCore"
+		"-framework AVFoundation"
+		"-framework AudioToolbox"
+		"-framework CoreMotion"
+		"-framework GameController"
+	)
+
+	if (SMW_IOS_BUNDLE_DATA)
+		add_custom_command(TARGET smw POST_BUILD
+			COMMAND "${CMAKE_COMMAND}" -E make_directory "$<TARGET_BUNDLE_CONTENT_DIR:smw>/Resources"
+			COMMAND "${CMAKE_COMMAND}" -E copy_directory
+				"${PROJECT_SOURCE_DIR}/data"
+				"$<TARGET_BUNDLE_CONTENT_DIR:smw>/Resources/data"
+			COMMENT "Copying game data into iOS app bundle"
+		)
+	endif()
+
+	# Convenience build target name for iOS builds.
+	add_custom_target(smw-ios DEPENDS smw)
+endif()
+
 if(NO_NETWORK)
 	target_compile_definitions(smw PRIVATE NETWORK_DISABLED)
 else()

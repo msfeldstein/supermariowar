@@ -1,0 +1,31 @@
+name: Build - iOS
+on:
+  workflow_call:
+
+jobs:
+  ios:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Configure (iOS Simulator)
+        run: >
+          cmake -S . -B build-ios -G Xcode
+          -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-iOS.cmake
+          -DSMW_IOS_PLATFORM=SIMULATOR
+          -DUSE_SDL2_LIBS=ON
+          -DUSE_BUNDLED_SDL=ON
+          -DBUILD_TESTS=OFF
+
+      - name: Build
+        run: cmake --build build-ios --config Release --verbose
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: supermariowar_ios_simulator_app
+          path: build-ios/**/smw.app
+

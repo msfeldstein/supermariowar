@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+
+	<key>CFBundleDisplayName</key>
+	<string>Super Mario War</string>
+	<key>CFBundleName</key>
+	<string>SuperMarioWar</string>
+
+	<key>CFBundleIdentifier</key>
+	<string>@SMW_IOS_BUNDLE_ID@</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+
+	<key>CFBundleShortVersionString</key>
+	<string>@SMW_VERSION@</string>
+	<key>CFBundleVersion</key>
+	<string>@SMW_VERSION@</string>
+
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+
+	<key>UIStatusBarHidden</key>
+	<true/>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+</dict>
+</plist>
+

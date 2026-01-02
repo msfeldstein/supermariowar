@@ -78,6 +78,7 @@ The game uses artwork and sounds from Nintendo games. We hope that this noncomme
 - XBox (?)
 - Android (experimental)
 - asm.js (experimental)
+- iOS (experimental)
 
 
 ## Building instructions
@@ -169,6 +170,18 @@ The Android port uses a different build system, you can find more details [here]
 ### Emscripten
 
 SMW can be build to run in your browser using [Emscripten](https://kripken.github.io/emscripten-site/). You can find the build instructions in the [wiki](https://github.com/mmatyas/supermariowar/wiki/Building-the-Emscripten-port).
+
+### iOS (experimental)
+
+The iOS build currently targets the Simulator by default (no code signing required) and builds the main `smw` app bundle.
+
+```sh
+cmake -S . -B build-ios -G Xcode \
+  -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-iOS.cmake \
+  -DSMW_IOS_PLATFORM=SIMULATOR \
+  -DUSE_SDL2_LIBS=ON -DUSE_BUNDLED_SDL=ON -DBUILD_TESTS=OFF
+cmake --build build-ios --config Release
+```
 
 ### Other devices
 

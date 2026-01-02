@@ -19,6 +19,10 @@ jobs:
     name: macOS
     uses: ./.github/workflows/build_macos.yml
 
+  build-ios:
+    name: iOS
+    uses: ./.github/workflows/build_ios.yml
+
   build-mingw:
     name: Windows
     uses: ./.github/workflows/build_mingw.yml
