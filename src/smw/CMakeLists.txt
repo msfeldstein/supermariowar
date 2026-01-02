@@ -109,16 +109,16 @@ endif()
 # Dependencies
 #
 
-target_link_libraries(smw CommonFiles)
+target_link_libraries(smw PRIVATE CommonFiles)
 if(NOT NO_NETWORK)
-	target_link_libraries(smw NetplayFiles)
+	target_link_libraries(smw PRIVATE NetplayFiles)
 endif()
 
 if(NOT EMSCRIPTEN)
-	target_link_libraries(smw ZLIB::ZLIB)
+	target_link_libraries(smw PRIVATE ZLIB::ZLIB)
 endif()
 
-target_link_libraries(smw yaml-cpp)
+target_link_libraries(smw PRIVATE yaml-cpp)
 
 #
 # Installation
