@@ -30,7 +30,13 @@ void SDLCALL soundfinished(int channel)
 
 bool sfx_init()
 {
-    Mix_OpenAudio(44100, AUDIO_S16, 2, 2048);
+    if (Mix_OpenAudio(44100, AUDIO_S16, 2, 2048) < 0) {
+        // Don't hard-fail if the host has no usable audio device/backend.
+        // The game should remain playable without sound/music.
+        printf("[sfx] Mix_OpenAudio failed: %s\n", Mix_GetError());
+        return false;
+    }
+
     Mix_AllocateChannels(NUM_SOUND_CHANNELS);
 
     for (short iChannel = 0; iChannel < NUM_SOUND_CHANNELS; iChannel++)
@@ -38,8 +44,12 @@ bool sfx_init()
 
 #ifndef __EMSCRIPTEN__
     const SDL_version* link_version = Mix_Linked_Version();
-    printf("[sfx] SDL_Mixer %d.%d.%d initialized.\n",
-        link_version->major, link_version->minor, link_version->patch);
+    if (link_version) {
+        printf("[sfx] SDL_Mixer %d.%d.%d initialized.\n",
+            link_version->major, link_version->minor, link_version->patch);
+    } else {
+        printf("[sfx] SDL_Mixer initialized.\n");
+    }
 #else
     SDL_version ver_compiled;
     SDL_MIXER_VERSION(&ver_compiled);
